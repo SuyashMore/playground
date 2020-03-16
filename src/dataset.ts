@@ -15,6 +15,7 @@ limitations under the License.
 
 import * as d3 from 'd3';
 
+
 /**
  * A two dimensional example: x and y coordinates with the label.
  */
@@ -23,6 +24,7 @@ export type Example2D = {
   y: number,
   label: number
 };
+
 
 type Point = {
   x: number,
