@@ -1,39 +1,31 @@
 <!doctype html>
-<!-- Copyright 2016 Google Inc. All Rights Reserved.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-==============================================================================-->
 <html>
+
 <head lang="en">
   <meta charset="utf-8">
   <meta name="viewport" content="width=1024">
 
-  <title>A Neural Network Playground</title>
+  <title>Neural Network Playground 2.0</title>
   <link rel="stylesheet" href="bundle.css" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500|Material+Icons" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500|Material+Icons" rel="stylesheet"
+    type="text/css">
   <script src="lib.js"></script>
-  
+
 </head>
+
 <body>
-  Google Analytics Removed !
+  Removed More !
   <!-- Top Controls -->
   <div id="top-controls">
     <div class="container l--page">
       <div class="timeline-controls">
-        <button class="mdl-button mdl-js-button mdl-button--icon ui-resetButton" id="reset-button" title="Reset the network">
+        <button class="mdl-button mdl-js-button mdl-button--icon ui-resetButton" id="reset-button"
+          title="Reset the network">
           <i class="material-icons">replay</i>
         </button>
-        <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored ui-playButton" id="play-pause-button" title="Run/Pause">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored ui-playButton"
+          id="play-pause-button" title="Run/Pause">
           <i class="material-icons">play_arrow</i>
           <i class="material-icons">pause</i>
         </button>
@@ -163,9 +155,9 @@ limitations under the License.
             <input class="mdl-slider mdl-js-slider" type="range" id="batchSize" min="1" max="30" step="1">
           </p>
         </div>
-          <button class="basic-button" id="data-regen-button" title="Regenerate data">
-            Regenerate
-          </button>
+        <button class="basic-button" id="data-regen-button" title="Regenerate data">
+          Regenerate Data
+        </button>
       </div>
     </div>
 
@@ -176,7 +168,8 @@ limitations under the License.
       <div id="network">
         <svg id="svg" width="510" height="450">
           <defs>
-            <marker id="markerArrow" markerWidth="7" markerHeight="13" refX="1" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+            <marker id="markerArrow" markerWidth="7" markerHeight="13" refX="1" refY="6" orient="auto"
+              markerUnits="userSpaceOnUse">
               <path d="M2,11 L7,6 L2,2" />
             </marker>
           </defs>
@@ -184,13 +177,15 @@ limitations under the License.
         <!-- Hover card -->
         <div id="hovercard">
           <div style="font-size:10px">Click anywhere to edit.</div>
-          <div><span class="type">Weight/Bias</span> is <span class="value">0.2</span><span><input type="number"/></span>.</div>
+          <div><span class="type">Weight/Bias</span> is <span class="value">0.2</span><span><input
+                type="number" /></span>.</div>
         </div>
         <div class="callout thumbnail">
           <svg viewBox="0 0 30 30">
             <defs>
-              <marker id="arrow" markerWidth="5" markerHeight="5" refx="5" refy="2.5" orient="auto" markerUnits="userSpaceOnUse">
-                <path d="M0,0 L5,2.5 L0,5 z"/>
+              <marker id="arrow" markerWidth="5" markerHeight="5" refx="5" refy="2.5" orient="auto"
+                markerUnits="userSpaceOnUse">
+                <path d="M0,0 L5,2.5 L0,5 z" />
               </marker>
             </defs>
             <path d="M12,30C5,20 2,15 12,0" marker-end="url(#arrow)">
@@ -202,8 +197,9 @@ limitations under the License.
         <div class="callout weights">
           <svg viewBox="0 0 30 30">
             <defs>
-              <marker id="arrow" markerWidth="5" markerHeight="5" refx="5" refy="2.5" orient="auto" markerUnits="userSpaceOnUse">
-                <path d="M0,0 L5,2.5 L0,5 z"/>
+              <marker id="arrow" markerWidth="5" markerHeight="5" refx="5" refy="2.5" orient="auto"
+                markerUnits="userSpaceOnUse">
+                <path d="M0,0 L5,2.5 L0,5 z" />
               </marker>
             </defs>
             <path d="M12,30C5,20 2,15 12,0" marker-end="url(#arrow)">
@@ -267,7 +263,7 @@ limitations under the License.
             </g>
           </svg>
         </div>
-        <br/>
+        <br />
         <div style="display:flex;">
           <label class="ui-showTestData mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-test-data">
             <input type="checkbox" id="show-test-data" class="mdl-checkbox__input" checked>
@@ -283,16 +279,10 @@ limitations under the License.
 
   </div>
 
-  <!-- More -->
-  <div class="more">
-    <!-- <button class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">keyboard_arrow_down</i></button> -->
-    <button class="mdl-button mdl-js-button mdl-button--fab">
-      <i class="material-icons">keyboard_arrow_down</i>
-    </button>
-  </div>
 
   <script src="bundle.js"></script>
   <!-- Google analytics -->
   <script src="analytics.js"></script>
 </body>
+
 </html>
