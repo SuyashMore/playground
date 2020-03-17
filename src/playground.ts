@@ -14,8 +14,9 @@ limitations under the License.
 ==============================================================================*/
 
 import * as nn from "./nn";
+import * as Plotly from 'plotly.js';
 import * as fileProcessor from "./fileParser";
-import {HeatMap, reduceMatrix} from "./heatmap";
+import {HeatMap, reduceMatrix,GRAD_COLOR_1,GRAD_COLOR_2,GRAD_COLOR_3} from "./heatmap";
 import {
   State,
   datasets,
@@ -54,6 +55,8 @@ const NUM_SAMPLES_CLASSIFY = 500;
 const NUM_SAMPLES_REGRESS = 1200;
 const DENSITY = 100;
 const MAX_HIDDEN_LAYERS = 12;
+let xDomain: [number, number] = [-10, 10];
+const HEATMAP_WIDTH = 300;
 
 enum HoverType {
   BIAS, WEIGHT
@@ -155,9 +158,9 @@ state.getHiddenProps().forEach(prop => {
 let boundary: {[id: string]: number[][]} = {};
 let selectedNodeId: string = null;
 // Plot the heatmap.
-let xDomain: [number, number] = [-6, 6];
+
 let heatMap =
-    new HeatMap(300, DENSITY, xDomain, xDomain, d3.select("#heatmap"),
+    new HeatMap(HEATMAP_WIDTH, DENSITY, xDomain, xDomain, d3.select("#heatmap"),
         {showAxes: true});
 let linkWidthScale = d3.scale.linear()
   .domain([0, 5])
@@ -165,7 +168,7 @@ let linkWidthScale = d3.scale.linear()
   .clamp(true);
 let colorScale = d3.scale.linear<string, number>()
                      .domain([-1, 0, 1])
-                     .range(["#f59322", "#e8eaeb", "#0877bd"])
+                     .range([GRAD_COLOR_1, GRAD_COLOR_2, GRAD_COLOR_3])
                      .clamp(true);
 let iter = 0;
 let trainData: Example2D[] = [];
@@ -1005,6 +1008,9 @@ function drawDatasetThumbnails() {
   }
 }
 
+var trace1,trace2;
+var dataSS,layout;
+
 function generateData(firstTime = false) {
   if (!firstTime)  {
     // Change the seed.
@@ -1026,7 +1032,59 @@ function generateData(firstTime = false) {
   testData = data.slice(splitIndex);
   heatMap.updatePoints(trainData);
   heatMap.updateTestPoints(state.showTestData ? testData : []);
+
+  console.log("DataSet Generated");
+  async function create3dPlot():Promise<any>{
+    var pXs = trainData.filter(x=>x.label==1?true:false).map(x=>(10*x.x).toString());
+    var pYs = trainData.filter(x=>x.label==1?true:false).map(x=>(10*x.y).toString());
+    var pZ= trainData.filter(x=>x.label==1?true:false).map(x=>(0).toString());
+    var nXs = trainData.filter(x=>x.label==-1?true:false).map(x=>(10*x.x).toString());
+    var nYs = trainData.filter(x=>x.label==-1?true:false).map(x=>(10*x.y).toString());
+    var nZ= trainData.filter(x=>x.label==-1?true:false).map(x=>(0).toString());
+
+    trace1 = {
+      x:pXs, y: pYs, z: pZ,
+      mode: 'markers',
+      marker: {
+        size: 3,
+        line: {
+        color: 'rgba(217, 217, 217, 0.14)',
+        width: 0.5},
+        opacity: 0.8},
+      type: 'scatter3d'
+    };
+
+    trace2 = {
+      x:nXs, y: nYs, z: nZ,
+      mode: 'markers',
+      marker: {
+        size: 3,
+        line: {
+        color: 'rgb(127, 127, 127)',
+        width: 0.5},
+        opacity: 0.8},
+      type: 'scatter3d'
+    };
+
+    dataSS = [trace1, trace2];
+    layout = {margin: {
+      l: 0,
+      r: 0,
+      b: 0,
+      t: 0
+      }};
+    console.log(dataSS);
+    Plotly.newPlot('plotlyDiv', dataSS, layout);
+  }
+
+  create3dPlot().then((result)=>{console.log("Async Complete")});
+  console.log("Promise Called");
+
+  
+  // console.log("Plot Complete !");
 }
+
+// console.log(dataSS);
 
 let firstInteraction = true;
 let parametersChanged = false;

@@ -25,6 +25,10 @@ export interface HeatMapSettings {
 /** Number of different shades (colors) when drawing a gradient heatmap */
 const NUM_SHADES = 30;
 
+export const GRAD_COLOR_1 = "#f59322";
+export const GRAD_COLOR_2 = "#e8eaeb";
+export const GRAD_COLOR_3 = "#0877bd";
+
 /**
  * Draws a heatmap using canvas. Used for showing the learned decision
  * boundary of the classification algorithm. Can also draw data points
@@ -65,11 +69,10 @@ export class HeatMap {
       .domain(yDomain)
       .range([height - 2 * padding, 0]);
 
-    // Get a range of colors.
     let tmpScale = d3.scale.linear<string, number>()
-        .domain([0, .5, 1])
-        .range(["#f59322", "#e8eaeb", "#0877bd"])
-        .clamp(true);
+    .domain([0, .5, 1])
+    .range([GRAD_COLOR_1, GRAD_COLOR_2, GRAD_COLOR_3])
+    .clamp(true);
     // Due to numerical error, we need to specify
     // d3.range(0, end + small_epsilon, step)
     // in order to guarantee that we will have end/step entries with
