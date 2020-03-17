@@ -1033,7 +1033,6 @@ function generateData(firstTime = false) {
   heatMap.updatePoints(trainData);
   heatMap.updateTestPoints(state.showTestData ? testData : []);
 
-  console.log("DataSet Generated");
   async function create3dPlot():Promise<any>{
     var pXs = trainData.filter(x=>x.label==1?true:false).map(x=>(10*x.x).toString());
     var pYs = trainData.filter(x=>x.label==1?true:false).map(x=>(10*x.y).toString());
@@ -1077,14 +1076,9 @@ function generateData(firstTime = false) {
     Plotly.newPlot('plotlyDiv', dataSS, layout);
   }
 
-  create3dPlot().then((result)=>{console.log("Async Complete")});
-  console.log("Promise Called");
-
-  
-  // console.log("Plot Complete !");
+  create3dPlot().then((result)=>{});
 }
 
-// console.log(dataSS);
 
 let firstInteraction = true;
 let parametersChanged = false;
