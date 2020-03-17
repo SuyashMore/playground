@@ -1,4 +1,3 @@
-
 export function handleFileSelect(event){
     const reader = new FileReader();
     reader.onload = handleFileLoad;
@@ -6,5 +5,7 @@ export function handleFileSelect(event){
 }
 
 function handleFileLoad(event){
+    var fileContents = event.target.result;
     console.log(event.target.result);
+    alert("File Uploaded Successfully");
 }

@@ -123,6 +123,12 @@ export class Activations {
     output: x => Math.max(0, x),
     der: x => x <= 0 ? 0 : 1
   };
+
+  public static LRELU: ActivationFunction = {
+    output: x => x>=0?x:(0.01*x),
+    der: x => x <= 0 ? 0.01 : 1
+  };
+
   public static SIGMOID: ActivationFunction = {
     output: x => 1 / (1 + Math.exp(-x)),
     der: x => {
@@ -130,6 +136,23 @@ export class Activations {
       return output * (1 - output);
     }
   };
+
+  public static SWISH: ActivationFunction = {
+    output: x => {
+      let sig = 1 / (1 + Math.exp(-x));
+      return x*sig;
+    },
+    der: x => {
+      let sig = 1 / (1 + Math.exp(-x));
+      return x*sig+sig*(1-x*sig);
+    }
+  };
+
+  public static STEP: ActivationFunction = {
+    output: x => x>=0?1:0,
+    der: x => 0
+  };
+
   public static LINEAR: ActivationFunction = {
     output: x => x,
     der: x => 1

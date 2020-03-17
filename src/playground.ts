@@ -53,6 +53,7 @@ const BIAS_SIZE = 5;
 const NUM_SAMPLES_CLASSIFY = 500;
 const NUM_SAMPLES_REGRESS = 1200;
 const DENSITY = 100;
+const MAX_HIDDEN_LAYERS = 12;
 
 enum HoverType {
   BIAS, WEIGHT
@@ -251,7 +252,7 @@ function makeGUI() {
     .classed("selected", true);
 
   d3.select("#add-layers").on("click", () => {
-    if (state.numHiddenLayers >= 6) {
+    if (state.numHiddenLayers >= MAX_HIDDEN_LAYERS) {
       return;
     }
     state.networkShape[state.numHiddenLayers] = 2;

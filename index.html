@@ -15,7 +15,6 @@
 </head>
 
 <body>
-  Removed GA !
   <!-- Top Controls -->
   <div id="top-controls">
     <div class="container l--page">
@@ -60,9 +59,12 @@
         <div class="select">
           <select id="activations">
             <option value="relu">ReLU</option>
+            <option value="Lrelu">Leaky ReLU</option>
+            <option value="swish">Swish</option>
             <option value="tanh">Tanh</option>
             <option value="sigmoid">Sigmoid</option>
             <option value="linear">Linear</option>
+            <option value="step">Binary Step</option>
           </select>
         </div>
       </div>
@@ -221,6 +223,8 @@
         </div>
       </div>
     </div>
+
+
 
     <!-- Hidden Layers Column -->
     <div class="column hidden-layers">

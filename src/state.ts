@@ -22,9 +22,12 @@ const HIDE_STATE_SUFFIX = "_hide";
 /** A map between names and activation functions. */
 export let activations: {[key: string]: nn.ActivationFunction} = {
   "relu": nn.Activations.RELU,
+  "Lrelu": nn.Activations.LRELU,
   "tanh": nn.Activations.TANH,
   "sigmoid": nn.Activations.SIGMOID,
-  "linear": nn.Activations.LINEAR
+  "linear": nn.Activations.LINEAR,
+  "step": nn.Activations.STEP,
+  "swish": nn.Activations.SWISH
 };
 
 /** A map between names and regularization functions. */
