@@ -14,6 +14,7 @@ limitations under the License.
 ==============================================================================*/
 
 import * as nn from "./nn";
+import * as fileProcessor from "./fileParser";
 import {HeatMap, reduceMatrix} from "./heatmap";
 import {
   State,
@@ -175,6 +176,8 @@ let player = new Player();
 let lineChart = new AppendingLineChart(d3.select("#linechart"),
     ["#777", "black"]);
 
+
+    // Handles all the GUI Button Click Functions and Interactions
 function makeGUI() {
   d3.select("#reset-button").on("click", () => {
     reset();
@@ -205,6 +208,9 @@ function makeGUI() {
     generateData();
     parametersChanged = true;
   });
+
+  // File Upload Listener
+  document.getElementById('dFileInput').addEventListener('change',fileProcessor.handleFileSelect,false);
 
   let dataThumbnails = d3.selectAll("canvas[data-dataset]");
   dataThumbnails.on("click", function() {
@@ -963,32 +969,6 @@ function reset(onStartup=false) {
   updateUI(true);
 };
 
-function initTutorial() {
-  if (state.tutorial == null || state.tutorial === '' || state.hideText) {
-    return;
-  }
-  // Remove all other text.
-  d3.selectAll("article div.l--body").remove();
-  let tutorial = d3.select("article").append("div")
-    .attr("class", "l--body");
-  // Insert tutorial text.
-  d3.html(`tutorials/${state.tutorial}.html`, (err, htmlFragment) => {
-    if (err) {
-      throw err;
-    }
-    tutorial.node().appendChild(htmlFragment);
-    // If the tutorial has a <title> tag, set the page title to that.
-    let title = tutorial.select("title");
-    if (title.size()) {
-      d3.select("header h1").style({
-        "margin-top": "20px",
-        "margin-bottom": "20px",
-      })
-      .text(title.text());
-      document.title = title.text();
-    }
-  });
-}
 
 function drawDatasetThumbnails() {
   function renderThumbnail(canvas, dataGenerator) {
@@ -1022,46 +1002,6 @@ function drawDatasetThumbnails() {
       renderThumbnail(canvas, dataGenerator);
     }
   }
-}
-
-function hideControls() {
-  // Set display:none to all the UI elements that are hidden.
-  let hiddenProps = state.getHiddenProps();
-  hiddenProps.forEach(prop => {
-    let controls = d3.selectAll(`.ui-${prop}`);
-    if (controls.size() === 0) {
-      console.warn(`0 html elements found with class .ui-${prop}`);
-    }
-    controls.style("display", "none");
-  });
-
-  // Also add checkbox for each hidable control in the "use it in classrom"
-  // section.
-  let hideControls = d3.select(".hide-controls");
-  HIDABLE_CONTROLS.forEach(([text, id]) => {
-    let label = hideControls.append("label")
-      .attr("class", "mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect");
-    let input = label.append("input")
-      .attr({
-        type: "checkbox",
-        class: "mdl-checkbox__input",
-      });
-    if (hiddenProps.indexOf(id) === -1) {
-      input.attr("checked", "true");
-    }
-    input.on("change", function() {
-      state.setHideProperty(id, !this.checked);
-      state.serialize();
-      userHasInteracted();
-      d3.select(".hide-controls-link")
-        .attr("href", window.location.href);
-    });
-    label.append("span")
-      .attr("class", "mdl-checkbox__label label")
-      .text(text);
-  });
-  d3.select(".hide-controls-link")
-    .attr("href", window.location.href);
 }
 
 function generateData(firstTime = false) {
@@ -1106,8 +1046,6 @@ function simulationStarted() {
 }
 
 drawDatasetThumbnails();
-initTutorial();
 makeGUI();
 generateData(true);
 reset(true);
-hideControls();
