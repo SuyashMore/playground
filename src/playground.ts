@@ -1065,7 +1065,7 @@ function hideControls() {
 }
 
 function generateData(firstTime = false) {
-  if (!firstTime) {
+  if (!firstTime)  {
     // Change the seed.
     state.seed = Math.random().toFixed(5);
     state.serialize();

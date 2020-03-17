@@ -54,10 +54,48 @@ export function shuffle(array: any[]): void {
 
 export type DataGenerator = (numSamples: number, noise: number) => Example2D[];
 
+export function classifySnakeData(numSamples: number, noise: number):
+    Example2D[] {
+  let points: Example2D[] = [];
+  
+  console.log("Generating Snake data Points");
+  let varianceScale = d3.scale.linear().domain([0, .5]).range([0.5, 4]);
+  let variance = varianceScale(noise);
+
+  function genGaussX(cx: number, cy: number, label: number) {
+    for (let i = 0; i < numSamples / 2; i++) {
+      let x = normalRandom(cx, variance/3);
+      let y = normalRandom(cy, 5*variance);
+      points.push({x, y, label});
+    }
+  }
+
+  function genGaussY(cx: number, cy: number, label: number) {
+    for (let i = 0; i < numSamples / 2; i++) {
+      let x = normalRandom(cx, 4*variance);
+      let y = normalRandom(cy, variance/3);
+      points.push({x, y, label});
+    }
+  }
+
+  
+  genGaussX(-4, 0, -1); // Gaussian with negative examples.
+  genGaussX(-1, 0, 1); // Gaussian with positive examples.
+  genGaussX(1.5, 0, -1); // Gaussian with negative examples.
+  genGaussX(4, 0, 1); // Gaussian with positive examples.
+
+  genGaussY(-2, 5, -1); // Gaussian with negative examples.
+  genGaussY(2, -5, 1); // Gaussian with negative examples.
+
+
+  return points;
+}
+
 export function classifyTwoGaussData(numSamples: number, noise: number):
     Example2D[] {
   let points: Example2D[] = [];
-
+  
+  console.log("Generating 2 gauss data Points");
   let varianceScale = d3.scale.linear().domain([0, .5]).range([0.5, 4]);
   let variance = varianceScale(noise);
 
@@ -71,6 +109,36 @@ export function classifyTwoGaussData(numSamples: number, noise: number):
 
   genGauss(2, 2, 1); // Gaussian with positive examples.
   genGauss(-2, -2, -1); // Gaussian with negative examples.
+  return points;
+}
+
+export function classifySpiral2Data(numSamples: number, noise: number):
+    Example2D[] {
+  let points: Example2D[] = [];
+  
+  console.log("Generating Spiral2 data Points");
+  
+  function genCircle(radius:number,innerRadius:number,label:number){
+    for (let i = 0; i < numSamples / 4; i++) {
+      let r = randUniform(innerRadius, radius * 0.8);
+      let angle = randUniform(0, 2 * Math.PI);
+      let x = r * Math.sin(angle);
+      let y = r * Math.cos(angle);
+      let noiseX = randUniform(-radius, radius) * noise;
+      let noiseY = randUniform(-radius, radius) * noise;
+      points.push({x, y, label});
+    }
+  }
+
+  let r = 1;
+  genCircle(0,r,1);
+  r=2.2;
+  genCircle(r,r,-1);
+  r=4;
+  genCircle(r,r,1);
+  r=5.5;
+  genCircle(r,r,-1);
+
   return points;
 }
 
@@ -112,6 +180,7 @@ export function regressGaussian(numSamples: number, noise: number):
     [4, -2.5, -1]
   ];
 
+
   function getLabel(x, y) {
     // Choose the one that is maximum in abs value.
     let label = 0;
@@ -140,6 +209,8 @@ export function classifySpiralData(numSamples: number, noise: number):
   let points: Example2D[] = [];
   let n = numSamples / 2;
 
+  console.log("Generating Spiral Data Points");
+
   function genSpiral(deltaT: number, label: number) {
     for (let i = 0; i < n; i++) {
       let r = i / n * 5;
@@ -163,6 +234,7 @@ export function classifyCircleData(numSamples: number, noise: number):
     return (dist(p, center) < (radius * 0.5)) ? 1 : -1;
   }
 
+  console.log("generating Circle Data Points");
   // Generate positive points inside the circle.
   for (let i = 0; i < numSamples / 2; i++) {
     let r = randUniform(0, radius * 0.5);
@@ -186,6 +258,8 @@ export function classifyCircleData(numSamples: number, noise: number):
     let label = getCircleLabel({x: x + noiseX, y: y + noiseY}, {x: 0, y: 0});
     points.push({x, y, label});
   }
+
+  // console.log(points);
   return points;
 }
 
@@ -193,6 +267,7 @@ export function classifyXORData(numSamples: number, noise: number):
     Example2D[] {
   function getXORLabel(p: Point) { return p.x * p.y >= 0 ? 1 : -1; }
 
+  console.log("Generating XOR Data Points");
   let points: Example2D[] = [];
   for (let i = 0; i < numSamples; i++) {
     let x = randUniform(-5, 5);
@@ -202,11 +277,14 @@ export function classifyXORData(numSamples: number, noise: number):
     y += y > 0 ? padding : -padding;
     let noiseX = randUniform(-5, 5) * noise;
     let noiseY = randUniform(-5, 5) * noise;
+
     let label = getXORLabel({x: x + noiseX, y: y + noiseY});
     points.push({x, y, label});
   }
   return points;
 }
+
+
 
 /**
  * Returns a sample from a uniform [a, b] distribution.
